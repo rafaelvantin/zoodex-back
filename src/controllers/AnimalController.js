@@ -1,8 +1,31 @@
 const router = require("express").Router();
 const Animal = require("../models/animal.js");
+
+const cloudinary = require("cloudinary").v2;
 const multer = require("multer");
 const multerConfig = require("../config/multer.js");
 const { randomBytes } = require("crypto");
+const { unlinkSync } = require("fs");
+
+const upload = multer({ storage: multerConfig });
+const fakeZooName = "ZooBauru";
+
+const saveImage = (image) => {
+  return new Promise(async (resolve, reject) => {
+    cloudinary.uploader.upload(
+      image.path,
+      {
+        public_id: `${fakeZooName}/animals/${image.filename.slice(0, -4)}`,
+        overwrite: true,
+      },
+      (err, { url }) => {
+        unlinkSync(image.path);
+        if (err) reject(err);
+        resolve(url);
+      }
+    );
+  });
+};
 
 router.get("/", async (req, res) => {
   try {
@@ -23,47 +46,33 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", upload.single("image"), async (req, res) => {
   try {
-    console.log(req.body);
+    const animal = await Animal.create(req.body);
+    const imageUrl = req.file ? await saveImage(req.file, res) : "";
 
-    if (req.body.image) {
-      const upload = multer({ multerConfig }).single("image");
+    const animalWithImage = await Animal.updateOne(
+      { _id: animal._id },
+      {
+        image: imageUrl,
+      }
+    );
 
-      upload(req, res, function (err) {
-        if (err) return res.send(err);
-
-        cloudinary.uploader.upload(
-          path,
-          { public_id: `blog/${uniqueFilename}`, tags: `blog` },
-          function (err, image) {
-            if (err) return res.send(err);
-            console.log("file uploaded to Cloudinary");
-            // remove file from server
-            const fs = require("fs");
-            fs.unlinkSync(path);
-            // return image details
-            res.json(image);
-          }
-        );
-      });
-
-      const animal = await Animal.create(req.body);
-      return res.send(animal);
-    }
+    return res.send(animalWithImage);
   } catch (erro) {
     console.log(erro);
     return res.status(400).send(erro);
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", upload.single("image"), async (req, res) => {
   try {
-    const animal = await Animal.findByIdAndUpdate(req.params.id, {
-      $set: {
-        name: req.body.name,
-      },
-    });
+    const imageUrl = req.file ? await saveImage(req.file, res) : "";
+
+    const animal = await Animal.updateOne(
+      { _id: req.params.id },
+      { name: req.body.name }
+    );
     return res.send(animal);
   } catch (erro) {
     console.log(erro);
