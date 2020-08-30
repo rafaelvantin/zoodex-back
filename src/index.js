@@ -10,4 +10,4 @@ require("./controllers/AnimalController.js")(app);
 require("./uplode.js")(app);
 require("./image.js")(app);
 
-app.listen(3000);
+app.listen(process.env.PORT);
