@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 require("./controllers/AnimalController.js")(app);
-require("./uplode.js")(app);
-require("./image.js")(app);
+require("./controllers/ZooController.js")(app);
+require("./controllers/AuthController.js")(app);
 
-app.listen(process.env.PORT);
+app.listen(process.env.PORT || 3000);
