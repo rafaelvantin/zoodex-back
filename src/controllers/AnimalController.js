@@ -2,10 +2,8 @@ const router = require("express").Router();
 const Animal = require("../models/animal.js");
 
 const multer = require("multer");
-const multerConfig = require("../config/multer.js");
-
-const upload = multer({ storage: multerConfig });
-
+const { storage } = require("../config/multer.js");
+const upload = multer({ storage: storage });
 const { saveImage } = require("../config/multer.js");
 
 const authMiddleware = require("../middlewares/auth.js");
@@ -25,7 +23,7 @@ router.get("/:id", authMiddleware, async (req, res) => {
   try {
     const animal = await Animal.findOne({
       _id: req.params.id,
-      zoo_id: req.ZOO_ID,
+      zoo_id: req.params.ZOO_ID,
     });
     res.send(animal);
   } catch (erro) {
@@ -40,9 +38,7 @@ router.post("/", upload.single("image"), async (req, res) => {
 
     const animalWithImage = await Animal.updateOne(
       { _id: animal._id },
-      {
-        avatar: imageUrl,
-      }
+      { avatar: imageUrl }
     );
 
     return res.send(animalWithImage);
