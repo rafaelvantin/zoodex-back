@@ -8,7 +8,7 @@ const { saveImage, updateImage } = require("../config/multer.js");
 
 const authMiddleware = require("../middlewares/auth.js");
 
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const animals = await Animal.find({ zoo_id: req.params.ZOO_ID });
     return res.send(animals);
@@ -18,7 +18,7 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-router.get("/:id", authMiddleware, async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     console.log(req.params.id, req.params.ZOO_ID);
     const animal = await Animal.findOne({
