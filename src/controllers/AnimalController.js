@@ -34,6 +34,8 @@ router.get("/:id", authMiddleware, async (req, res) => {
 
 router.post("/", [authMiddleware, upload.single("image")], async (req, res) => {
   try {
+    req.body.curiosities = JSON.parse(req.body.curiosities);
+
     const animal = await Animal.create({
       zoo_id: req.params.ZOO_ID,
       ...req.body,
@@ -58,15 +60,14 @@ router.put(
   [authMiddleware, upload.single("image")],
   async (req, res) => {
     try {
-      let newImageUrl;
-
       const { avatar } = await Animal.findOne({
         _id: req.params.id,
         zoo_id: req.params.ZOO_ID,
       });
 
-      if (req.file)
-        newImageUrl = await updateImage(req.file, "animals", avatar);
+      const newImageUrl = req.file
+        ? await updateImage(req.file, "animals", avatar)
+        : undefined;
 
       const animal = await Animal.updateOne(
         { _id: req.params.id },
@@ -78,7 +79,7 @@ router.put(
           alimentation: req.body.alimentation,
           habitat: req.body.habitat,
           description: req.body.description,
-          curiosities: req.body.curiosities,
+          curiosities: JSON.parse(req.body.curiosities),
           avatar: newImageUrl ? newImageUrl : avatar,
         }
       );
