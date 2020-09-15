@@ -35,10 +35,13 @@ const saveImage = (image, type, zooname = "ZooBauru") => {
 
 const updateImage = (image, type, url, zooname = "ZooBauru") => {
   return new Promise(async (resolve, reject) => {
+    const imageArray = url.split("/");
+    const imageName = imageArray[imageArray.length - 1].slice(0, -4);
+
     cloudinary.uploader.upload(
       image.path,
       {
-        public_id: `${zooname}/${type}/${url.split("/")[0].slice(0, -4)}`,
+        public_id: `${zooname}/${type}/${imageName}`,
         overwrite: true,
       },
       (err, { url }) => {

@@ -7,7 +7,7 @@ const AnimalSchema = new mongoose.Schema({
     trim: true,
   },
   name: {
-    type: Number,
+    type: String,
     required: true,
     trim: true,
   },
@@ -37,6 +37,14 @@ const AnimalSchema = new mongoose.Schema({
   curiosities: {
     type: Array,
     required: true,
+  },
+  zoo_id: {
+    type: String,
+    required: true,
+  },
+  avatar: {
+    type: String,
+    required: false,
   },
   created_at: {
     type: Date,

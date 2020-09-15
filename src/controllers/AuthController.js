@@ -14,14 +14,14 @@ function generateToken(params = {}) {
 }
 
 router.get("/", authMiddleware, (req, res) => {
-  res.send({ ok: true, zoo: req.userId });
+  res.send({ ok: true, zoo: req.params.ZOO_ID });
 });
 
 router.post("/authenticate", async (req, res) => {
   const { email, password } = req.body;
 
   const zoo = await Zoo.findOne({ email }).select("+password");
-  console.log(zoo);
+
   if (!zoo) return res.status(400).send({ error: "Zoo not found" });
 
   if (!(await bcrypt.compare(password, zoo.password)))
