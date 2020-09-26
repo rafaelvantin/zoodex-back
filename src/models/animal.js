@@ -1,26 +1,22 @@
 const mongoose = require("../database/index.js");
 
 const AnimalSchema = new mongoose.Schema({
-  scientific_name: {
-    type: String,
-    required: true,
-    trim: true,
-  },
   name: {
     type: String,
     required: true,
     trim: true,
   },
-  group: {
+  scientificName: {
     type: String,
     required: true,
     trim: true,
   },
-  life_expectancy: {
-    type: Number,
+  phylum: {
+    type: String,
     required: true,
+    trim: true,
   },
-  alimentation: {
+  className: {
     type: String,
     required: true,
     trim: true,
@@ -30,17 +26,25 @@ const AnimalSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  description: {
+  alimentation: {
     type: String,
     required: true,
+    trim: true,
   },
-  curiosities: {
-    type: Array,
+  clockHabit: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  lifeExpectancy: {
+    type: Number,
     required: true,
   },
+  curiosities: [],
   zoo_id: {
     type: String,
     required: true,
+    select: false,
   },
   avatar: {
     type: String,
@@ -49,6 +53,7 @@ const AnimalSchema = new mongoose.Schema({
   created_at: {
     type: Date,
     default: Date.now(),
+    select: false,
   },
 });
 

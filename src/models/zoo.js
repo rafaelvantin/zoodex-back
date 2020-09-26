@@ -11,6 +11,11 @@ const ZooSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  cnpj: {
+    type: String,
+    required: true,
+    trim: true,
+  },
   password: {
     type: String,
     required: true,
@@ -56,7 +61,24 @@ const ZooSchema = new mongoose.Schema({
       },
     },
   ],
+  additionalInfo: [
+    {
+      title: {
+        type: String,
+        required: true,
+      },
+      info: {
+        type: String,
+        required: true,
+      },
+    },
+  ],
   avatar: {
+    type: String,
+    required: false,
+    trim: true,
+  },
+  map: {
     type: String,
     required: false,
     trim: true,
