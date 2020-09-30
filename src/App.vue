@@ -10,6 +10,28 @@ import Header from "./components/Header";
 
 export default {
   components: { Header },
+  /*data() {
+    return {
+      zoo: {
+        name: "",
+        cnpj: "",
+        phone1: "",
+        phone2: "",
+        address: {
+          cidade: "",
+          estado: "",
+          cep: "",
+          rua: "",
+          complemento: "",
+        },
+        email: "",
+        confirm_email: "",
+        password: "",
+        confirm_password: "",
+      },
+    };
+  },
+  */
 };
 </script>
 

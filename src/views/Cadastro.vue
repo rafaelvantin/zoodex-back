@@ -7,8 +7,10 @@
           <tr id="tr">
             <th>
               1. Cadastre os dados básicos do zoológico.
-              <br />2. Escolha os dados a serem apresentados. <br />3. Adicione
-              mais campos de acordo com sua preferência. <br />4. Finalize o
+              <br />2. Escolha os dados a serem apresentados.
+              <br />3. Adicione
+              mais campos de acordo com sua preferência.
+              <br />4. Finalize o
               cadastro.
               <br />
             </th>
@@ -18,142 +20,136 @@
     </article>
 
     <article class="message" id="article">
-      <div class="message-header" id="message-header2">
-        Cadastro - Dados da instituição
-      </div>
+      <div class="message-header" id="message-header2">Cadastro - Dados da instituição</div>
       <div class="message-body" id="message-body2">
-        <div class="columns is-8" id="columns">
-          <div class="column is-2">
+        <div class="columns is-12" id="columns">
+          <div class="column is-3">
             <label id="lbl_form">Nome:</label>
             <input
               type="text"
               class="input"
               placeholder="Insira o nome"
-              id="input"
+              id="input1"
               style="width: 170px"
             />
           </div>
-          <div class="column is-2">
+          <div class="column is-3">
             <label id="lbl_form">CNPJ:</label>
             <input
               type="text"
               class="input"
               placeholder="Insira o CNPJ"
-              id="input"
+              id="input2"
               style="width: 170px"
             />
           </div>
-          <div class="column is-2">
+          <div class="column is-3">
             <label id="lbl_form">Telefone 1:</label>
             <input
               type="text"
               class="input"
               placeholder="Insira o telefone 1"
-              id="input"
+              id="input3"
               style="width: 170px"
             />
           </div>
-          <div class="column is-2">
+          <div class="column is-3">
             <label id="lbl_form">Telefone 2:</label>
             <input
               type="text"
               class="input"
               placeholder="Insira o telefone 2"
-              id="input"
-              style="width: 170px"
-            />
-          </div>
-          <div class="column is-1">
-            <label id="lbl_form">Cidade:</label>
-            <input
-              type="text"
-              class="input"
-              placeholder="Cidade"
-              id="input"
-              style="width: 170px"
-            />
-          </div>
-          <div class="column is-1" id="columns">
-            <label id="lbl_form">Estado:</label>
-            <input
-              type="text"
-              class="input"
-              placeholder="Estado"
-              id="input"
-              style="width: 170px"
-            />
-          </div>
-          <div class="column is-2" id="columns">
-            <label id="lbl_form">CEP:</label>
-            <input
-              type="text"
-              class="input"
-              placeholder="Insira o CEP"
-              id="input"
+              id="input4"
               style="width: 170px"
             />
           </div>
         </div>
 
         <div class="columns is-12">
-          <div class="column is-2">
-            <label id="lbl_form">E-mail:</label>
+          <div class="column is-3">
+            <label id="lbl_form">Email:</label>
             <input
               type="text"
               class="input"
               placeholder="Insira o e-mail"
-              id="input"
+              id="input8"
               style="width: 170px"
             />
           </div>
-          <div class="column is-2">
-            <label id="lbl_form">Confirmar e-mail:</label>
+          <div class="column is-3">
+            <label id="lbl_form">Repita:</label>
             <input
               type="text"
               class="input"
               placeholder="Confirme o e-mail"
-              id="input"
+              id="input9"
               style="width: 170px"
             />
           </div>
-          <div class="column is-2">
+          <div class="column is-3">
             <label id="lbl_form">Senha:</label>
             <input
               type="text"
               class="input"
               placeholder="Insira a senha"
-              id="input"
+              id="input10"
               style="width: 170px"
             />
           </div>
-          <div class="column is-2">
-            <label id="lbl_form">Confirmar Senha:</label>
+          <div class="column is-3">
+            <label id="lbl_form">Repita:</label>
             <input
               type="text"
               class="input"
               placeholder="Confirme a senha"
-              id="input"
+              id="input11"
               style="width: 170px"
             />
           </div>
-          <div class="column is-2">
+        </div>
+
+        <div class="columns is-12">
+          <div class="column is-3">
+            <label id="lbl_form">Bairro:</label>
+            <input type="text" class="input" placeholder="Bairro" id="input5" style="width: 170px" />
+          </div>
+          <div class="column is-3" id="columns">
             <label id="lbl_form">Rua:</label>
-            <input
-              type="text"
-              class="input"
-              placeholder="Insira a rua"
-              id="input"
-              style="width: 170px"
-            />
+            <input type="text" class="input" placeholder="Rua" id="input6" style="width: 170px" />
           </div>
-          <div class="column is-2">
+          <div class="column is-3" id="columns">
             <label id="lbl_form">Complemento:</label>
             <input
               type="text"
               class="input"
-              placeholder="Insira complemento"
-              id="input"
-              style="width: 170px"
+              placeholder="Complemento"
+              id="input7"
+              style="width: 125px"
+            />
+          </div>
+          <div class="column is-3" id="columns">
+            <label id="lbl_form">Número:</label>
+            <input type="text" class="input" placeholder="Número" id="input7" style="width: 125px" />
+          </div>
+        </div>
+
+        <div class="columns is-12">
+          <div class="column is-4">
+            <label id="lbl_form">Cidade:</label>
+            <input type="text" class="input" placeholder="Cidade" id="input5" style="width: 250px" />
+          </div>
+          <div class="column is-4" id="columns">
+            <label id="lbl_form">Estado:</label>
+            <input type="text" class="input" placeholder="Estado" id="input6" style="width: 250px" />
+          </div>
+          <div class="column is-4" id="columns">
+            <label id="lbl_form">CEP:</label>
+            <input
+              type="text"
+              class="input"
+              placeholder="Insira o CEP"
+              id="input7"
+              style="width: 250px"
             />
           </div>
         </div>
@@ -161,9 +157,7 @@
     </article>
 
     <article class="message" id="article">
-      <div class="message-header" id="message-header3">
-        Quais dados você deseja apresentar?
-      </div>
+      <div class="message-header" id="message-header3">Quais dados você deseja apresentar?</div>
       <div class="message-body" id="message-body3">
         <div class="columns">
           <div class="column is-12">
@@ -302,12 +296,6 @@ export default {
   background-color: lightgreen;
   color: black;
   text-align: center;
-}
-
-#input {
-  display: inline-block;
-  width: 200px;
-  text-align: left;
 }
 
 #lbl {
