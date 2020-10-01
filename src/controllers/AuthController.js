@@ -24,10 +24,7 @@ router.post("/authenticate", async (req, res) => {
 
   if (!zoo) return res.status(400).send({ error: "Zoo not found" });
 
-  if (!(await bcrypt.compare(password, zoo.password)))
-    return res.status(400).send({ error: "Invalid password" });
-
-  zoo.password = undefined;
+  if (!(await bcrypt.compare(password, zoo.password))) return res.status(400).send({ error: "Invalid password" });
 
   res.send({
     zoo,
