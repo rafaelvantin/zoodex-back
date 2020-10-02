@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const authConfig = require("../config/auth.json");
 
 const authMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -12,11 +11,10 @@ const authMiddleware = (req, res, next) => {
 
   const [scheme, token] = parts;
 
-  if (!/^Bearer$/i.test(scheme))
-    return res.status(401).send({ error: "Token malformatted" });
+  if (!/^Bearer$/i.test(scheme)) return res.status(401).send({ error: "Token malformatted" });
 
-  jwt.verify(token, authConfig.secret, (err, decoded) => {
-    if (err) return res.status(401).send({ error: "Token invalid" });
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) return res.status(401).send({ error: err });
 
     req.params.ZOO_ID = decoded.id;
     return next();

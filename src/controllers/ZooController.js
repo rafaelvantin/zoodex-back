@@ -12,42 +12,9 @@ const { saveImage, updateImage } = require("../config/multer.js");
 const authMiddleware = require("../middlewares/auth.js");
 const admMiddleware = require("../middlewares/admin.js");
 
-//ADM GET AND DELETE
-
-router.get("/adm/", [authMiddleware, admMiddleware], async (req, res) => {
-  try {
-    const zoos = await Zoo.find();
-    return res.send(zoos);
-  } catch (error) {
-    console.log(error);
-    return res.status(400).send(error);
-  }
-});
-
-router.get("/adm/:id", [authMiddleware, admMiddleware], async (req, res) => {
-  try {
-    const zoo = await Zoo.findById(req.params.id);
-    res.send(zoo);
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-router.delete("/adm/", [authMiddleware, admMiddleware], async (req, res) => {
-  try {
-    const zoo = await Zoo.findOneAndRemove(req.params.id);
-    return res.send(zoo);
-  } catch (error) {
-    console.log(error);
-    return res.status(400).send(error);
-  }
-});
-
-//USER ROUTES
-
 router.get("/", async (req, res) => {
   try {
-    const zoo = await Zoo.find();
+    const zoo = await Zoo.find({});
     return res.send(zoo);
   } catch (error) {
     console.log(error);
@@ -65,7 +32,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", upload.fields([{ name: "avatarImage" }, { name: "mapImage" }]), async (req, res) => {
   try {
     if (await Zoo.findOne({ email: req.body.email }))
       return res.status(400).send({ error: "Email já foi cadastrado!" });
@@ -74,15 +41,16 @@ router.post("/", upload.single("image"), async (req, res) => {
 
     req.body.password = hashedPassword;
 
-    req.body.address = JSON.parse(req.body.address);
-    req.body.contacts = JSON.parse(req.body.contacts);
-    req.body.additionalInfo = JSON.parse(req.body.additionalInfo);
+    if (req.body.address) req.body.address = JSON.parse(req.body.address);
+    if (req.body.contacts) req.body.contacts = JSON.parse(req.body.contacts);
+    if (req.body.additionalInfo) req.body.additionalInfo = JSON.parse(req.body.additionalInfo);
 
     const zoo = await Zoo.create(req.body);
 
-    const imageUrl = req.file ? await saveImage(req.file, "zoos") : "";
+    const avatarUrl = req.files.avatarImage ? await saveImage(req.files.avatarImage, "zoos") : "";
+    const mapUrl = req.files.mapImage ? await saveImage(req.files.mapImage, "maps") : "";
 
-    const zooWithImage = await Zoo.updateOne({ _id: zoo._id }, { avatar: imageUrl });
+    const zooWithImage = await Zoo.updateOne({ _id: zoo._id }, { avatar: avatarUrl, map: mapUrl });
 
     return res.send(zooWithImage);
   } catch (error) {
@@ -91,31 +59,25 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-//authMiddleware
-router.put("/", upload.single("image"), async (req, res) => {
+router.put("/", [authMiddleware, upload.fields([{ name: "avatarImage" }, { name: "mapImage" }])], async (req, res) => {
   try {
-    const { name, cnpj, additionalInfo, address, contacts, avatar, map } = await Zoo.findOne({
-      //params
-      _id: req.headers.zoo_id,
+    const { avatar, map } = await Zoo.findOne({
+      _id: req.params.ZOO_ID,
     });
 
-    const newImageUrl = req.file ? await updateImage(req.file, "zoos", avatar) : undefined;
+    const newAvatarUrl = req.files.avatarImage ? await updateImage(req.files.avatarImage, "zoos", avatar) : undefined;
+    const newMapUrl = req.files.mapImage ? await updateImage(req.files.mapImage, "zoos", map) : undefined;
 
-    req.body.additionalInfo = JSON.parse(req.body.additionalInfo);
-    req.body.contacts = JSON.parse(req.body.contacts);
-    req.body.address = JSON.parse(req.body.address);
+    if (req.body.additionalInfo) req.body.additionalInfo = JSON.parse(req.body.additionalInfo);
+    if (req.body.contacts) contacts = JSON.parse(req.body.contacts);
+    if (req.body.address) req.body.address = JSON.parse(req.body.address);
 
-    //params
     const zoo = await Zoo.updateOne(
-      { _id: req.headers.zoo_id },
+      { _id: req.params.ZOO_ID },
       {
-        name: req.body.name ? req.body.name : name,
-        cnpj: req.body.cnpj ? req.body.cnpj : cnpj,
-        additionalInfo: req.body.additionalInfo ? req.body.additionalInfo : additionalInfo,
-        address: req.body.address ? req.body.address : address,
-        contacts: req.body.contacts ? req.body.contacts : contacts,
-        avatar: newImageUrl ? newImageUrl : avatar,
-        map: req.body.map ? req.body.map : map,
+        ...req.body,
+        avatar: newAvatarUrl ? newAvatarUrl : avatar,
+        map: newMapUrl ? newMapUrl : map,
       }
     );
 
@@ -126,11 +88,9 @@ router.put("/", upload.single("image"), async (req, res) => {
   }
 });
 
-//authMiddleware
-router.delete("/", async (req, res) => {
+router.delete("/", authMiddleware, async (req, res) => {
   try {
-    //params
-    const zoo = await Zoo.deleteOne({ _id: req.headers.zoo_id });
+    const zoo = await Zoo.deleteOne({ _id: req.params.ZOO_ID });
     return res.send(zoo);
   } catch (error) {
     console.log(error);

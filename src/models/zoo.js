@@ -83,6 +83,16 @@ const ZooSchema = new mongoose.Schema({
     required: false,
     trim: true,
   },
+  recoveryToken: {
+    type: String,
+    required: false,
+    select: true,
+  },
+  created_at: {
+    type: Date,
+    default: Date.now(),
+    select: false,
+  },
 });
 
 const Zoo = mongoose.model("Zoo", ZooSchema);

@@ -40,11 +40,14 @@ const AnimalSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  curiosities: [],
+  curiosities: {
+    type: Array,
+    required: false,
+  },
   zoo_id: {
     type: String,
     required: true,
-    select: false,
+    select: true,
   },
   avatar: {
     type: String,

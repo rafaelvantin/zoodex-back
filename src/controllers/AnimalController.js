@@ -31,13 +31,12 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-//authMiddleware
-router.post("/", upload.single("image"), async (req, res) => {
+router.post("/", [authMiddleware, upload.single("image")], async (req, res) => {
   try {
-    req.body.curiosities = JSON.parse(req.body.curiosities);
-    //params
+    if (req.body.curiosities) req.body.curiosities = JSON.parse(req.body.curiosities);
+
     const animal = await Animal.create({
-      zoo_id: req.headers.zoo_id,
+      zoo_id: req.params.ZOO_ID,
       ...req.body,
     });
 
@@ -52,59 +51,40 @@ router.post("/", upload.single("image"), async (req, res) => {
   }
 });
 
-//authMiddleware
-router.put("/:id", upload.single("image"), async (req, res) => {
+router.put("/:id", [authMiddleware, upload.single("image")], async (req, res) => {
   try {
-    const {
-      name,
-      scientificName,
-      phylum,
-      className,
-      habitat,
-      alimentation,
-      clockHabit,
-      lifeExpectancy,
-      curiosities,
-      avatar,
-    } = await Animal.findOne({
+    const animal = await Animal.findOne({
       _id: req.params.id,
-      //headers
-      zoo_id: req.headers.zoo_id,
+      zoo_id: req.params.ZOO_ID,
     });
+
+    if (!animal) return res.status(404).send("Animal not found");
+
+    const { avatar } = animal;
 
     const newImageUrl = req.file ? await updateImage(req.file, "animals", avatar) : null;
 
-    req.body.curiosities = JSON.parse(req.body.curiosities);
+    if (req.body.curiosities) req.body.curiosities = JSON.parse(req.body.curiosities);
 
-    const animal = await Animal.updateOne(
+    const animalUpdated = await Animal.updateOne(
       { _id: req.params.id },
       {
-        name: req.body.name ? req.body.name : name,
-        scientificName: req.body.scientificName ? req.body.scientificName : scientificName,
-        phylum: req.body.phylum ? req.body.phylum : phylum,
-        className: req.body.className ? req.body.className : className,
-        habitat: req.body.habitat ? req.body.habitat : habitat,
-        alimentation: req.body.alimentation ? req.body.alimentation : alimentation,
-        clockHabit: req.body.clockHabit ? req.body.clockHabit : clockHabit,
-        lifeExpectancy: req.body.lifeExpectancy ? req.body.lifeExpectancy : lifeExpectancy,
-        curiosities: req.body.curiosities ? req.body.curiosities : curiosities,
+        ...req.body,
         avatar: newImageUrl ? newImageUrl : avatar,
       }
     );
 
-    return res.send(animal);
+    return res.send(animalUpdated);
   } catch (erro) {
     console.log(erro);
     return res.status(400).send(erro);
   }
 });
 
-//authMiddleware
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     const animal = await Animal.deleteOne({
-      //params
-      zoo_id: req.headers.zoo_id,
+      zoo_id: req.params.ZOO_ID,
       _id: req.params.id,
     });
     return res.send(animal);
