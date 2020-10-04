@@ -18,38 +18,46 @@ const storage = diskStorage({
 
 const saveImage = (image, type, zooname = "ZooBauru") => {
   return new Promise(async (resolve, reject) => {
-    cloudinary.uploader.upload(
-      image.path,
-      {
-        public_id: `${zooname}/${type}/${image.filename.slice(0, -4)}`,
-        overwrite: true,
-      },
-      (err, { url }) => {
-        unlinkSync(image.path);
-        if (err) reject(err);
-        resolve(url);
-      }
-    );
+    try {
+      cloudinary.uploader.upload(
+        image.path,
+        {
+          public_id: `${zooname}/${type}/${image.filename.split(".")[0]}`,
+          overwrite: true,
+        },
+        (err, { url }) => {
+          unlinkSync(image.path);
+          if (err) reject(err);
+          resolve(url);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
   });
 };
 
 const updateImage = (image, type, url, zooname = "ZooBauru") => {
   return new Promise(async (resolve, reject) => {
-    const imageArray = url.split("/");
-    const imageName = imageArray[imageArray.length - 1].slice(0, -4);
+    try {
+      const imageArray = url.split("/");
+      const imageName = imageArray[imageArray.length - 1].slice(0, -4);
 
-    cloudinary.uploader.upload(
-      image.path,
-      {
-        public_id: `${zooname}/${type}/${imageName}`,
-        overwrite: true,
-      },
-      (err, { url }) => {
-        unlinkSync(image.path);
-        if (err) reject(err);
-        resolve(url);
-      }
-    );
+      cloudinary.uploader.upload(
+        image.path,
+        {
+          public_id: `${zooname}/${type}/${imageName}`,
+          overwrite: true,
+        },
+        (err, { url }) => {
+          unlinkSync(image.path);
+          if (err) reject(err);
+          resolve(url);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
   });
 };
 

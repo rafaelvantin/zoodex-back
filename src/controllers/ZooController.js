@@ -47,8 +47,8 @@ router.post("/", upload.fields([{ name: "avatarImage" }, { name: "mapImage" }]),
 
     const zoo = await Zoo.create(req.body);
 
-    const avatarUrl = req.files.avatarImage ? await saveImage(req.files.avatarImage, "zoos") : "";
-    const mapUrl = req.files.mapImage ? await saveImage(req.files.mapImage, "maps") : "";
+    const avatarUrl = req.files.avatarImage ? await saveImage(req.files.avatarImage[0], "zoos") : "";
+    const mapUrl = req.files.mapImage ? await saveImage(req.files.mapImage[0], "maps") : "";
 
     const zooWithImage = await Zoo.updateOne({ _id: zoo._id }, { avatar: avatarUrl, map: mapUrl });
 
@@ -65,8 +65,10 @@ router.put("/", [authMiddleware, upload.fields([{ name: "avatarImage" }, { name:
       _id: req.params.ZOO_ID,
     });
 
-    const newAvatarUrl = req.files.avatarImage ? await updateImage(req.files.avatarImage, "zoos", avatar) : undefined;
-    const newMapUrl = req.files.mapImage ? await updateImage(req.files.mapImage, "zoos", map) : undefined;
+    const newAvatarUrl = req.files.avatarImage
+      ? await updateImage(req.files.avatarImage[0], "zoos", avatar)
+      : undefined;
+    const newMapUrl = req.files.mapImage ? await updateImage(req.files.mapImage[0], "zoos", map) : undefined;
 
     if (req.body.additionalInfo) req.body.additionalInfo = JSON.parse(req.body.additionalInfo);
     if (req.body.contacts) contacts = JSON.parse(req.body.contacts);
