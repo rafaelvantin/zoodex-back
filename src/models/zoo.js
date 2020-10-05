@@ -86,7 +86,7 @@ const ZooSchema = new mongoose.Schema({
   recoveryToken: {
     type: String,
     required: false,
-    select: true,
+    select: false,
   },
   created_at: {
     type: Date,
