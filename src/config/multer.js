@@ -26,9 +26,9 @@ const saveImage = (image, type, zooname = "ZooBauru") => {
           overwrite: true,
         },
         (err, { url }) => {
-          unlinkSync(image.path);
           if (err) reject(err);
           resolve(url);
+          // unlinkSync(image.path);
         }
       );
     } catch (err) {
