@@ -37,10 +37,7 @@ module.exports = (server) => {
     io.to(user.room).emit("message", msg);
   };
 
-  let count = 0;
-
   io.on("connection", (socket) => {
-    console.log(`USUARIO CONECTADO ${count++}`);
     socket.on("join", (user) => onUserJoin(socket, user));
     socket.on("message", (msg) => onUserMessage(socket, msg));
   });
