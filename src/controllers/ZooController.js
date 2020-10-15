@@ -65,13 +65,15 @@ router.put("/", [authMiddleware, upload.fields([{ name: "avatarImage" }, { name:
       _id: req.params.ZOO_ID,
     });
 
+    console.log(req.files.avatarImage);
+
     const newAvatarUrl = req.files.avatarImage
       ? await updateImage(req.files.avatarImage[0], "zoos", avatar)
       : undefined;
     const newMapUrl = req.files.mapImage ? await updateImage(req.files.mapImage[0], "zoos", map) : undefined;
 
     if (req.body.additionalInfo) req.body.additionalInfo = JSON.parse(req.body.additionalInfo);
-    if (req.body.contacts) contacts = JSON.parse(req.body.contacts);
+    if (req.body.contacts) req.body.contacts = JSON.parse(req.body.contacts);
     if (req.body.address) req.body.address = JSON.parse(req.body.address);
 
     const zoo = await Zoo.updateOne(
