@@ -17,4 +17,4 @@ require("./controllers/AuthController.js")(app);
 const server = require("http").createServer(app);
 require("./config/socket.js")(server);
 
-server.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 3000);
