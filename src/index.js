@@ -13,8 +13,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 require("./controllers/AnimalController.js")(app);
 require("./controllers/ZooController.js")(app);
 require("./controllers/AuthController.js")(app);
-
-const server = require("http").createServer(app);
-require("./config/socket.js")(server);
+require("./controllers/UserController.js")(app);
 
 app.listen(process.env.PORT || 3000);
