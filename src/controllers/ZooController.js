@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Zoo = require("../models/zoo.js");
+const Animal = require("../models/animal.js");
 
 const bcrypt = require("bcrypt");
 
@@ -10,7 +11,6 @@ const upload = multer({ storage: storage });
 const { saveImage, updateImage } = require("../config/multer.js");
 
 const authMiddleware = require("../middlewares/auth.js");
-const admMiddleware = require("../middlewares/admin.js");
 
 router.get("/", async (req, res) => {
   try {
@@ -95,6 +95,7 @@ router.put("/", [authMiddleware, upload.fields([{ name: "avatarImage" }, { name:
 router.delete("/", authMiddleware, async (req, res) => {
   try {
     const zoo = await Zoo.deleteOne({ _id: req.params.ZOO_ID });
+    await Animal.deleteMany({ zoo_id: req.params.ZOO_ID });
     return res.send(zoo);
   } catch (error) {
     console.log(error);

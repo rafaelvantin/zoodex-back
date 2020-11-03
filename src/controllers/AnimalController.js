@@ -37,6 +37,7 @@ router.post("/", [authMiddleware, upload.single("image")], async (req, res) => {
 
     const animal = await Animal.create({
       zoo_id: req.params.ZOO_ID,
+      timesCaptured: 0,
       ...req.body,
     });
 

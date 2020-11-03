@@ -44,6 +44,10 @@ const AnimalSchema = new mongoose.Schema({
     type: Array,
     required: false,
   },
+  timesCaptured: {
+    type: Number,
+    required: true,
+  },
   zoo_id: {
     type: String,
     required: true,
