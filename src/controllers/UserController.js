@@ -42,8 +42,6 @@ router.get("/animal/:id", async (req, res) => {
 router.post("/animal/:id", async (req, res) => {
   try {
 
-    if(req.params.id.length != 24) return res.status(400).send({valid: false, error: "ID inválido!"});
-
     const animal = await Animal.findOne({
       _id: req.params.id,
       zoo_id: req.headers.zoo_id,
